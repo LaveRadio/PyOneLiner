@@ -1,0 +1,1 @@
+python OneLiner.py -i Text/LIST.txt -o Text/OBS.txt -s 15
