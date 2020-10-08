@@ -44,5 +44,5 @@ def init():
         time.sleep(args.sleep)
 
 
-print("Loading One Liner Hello Andy")
+print("Loading One Liner")
 init()
