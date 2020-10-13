@@ -5,7 +5,7 @@
 #                   the info for the song that is currently being played via VLC
 # author          :Tipher88
 # url             :https://obsproject.com/forum/resources/vlc-nowplaying.244/
-# contributors    :AbyssHunted, Etuldan
+# contributors    :AbyssHunted, Etuldan, Eid LeWeise
 # date            :20190227
 # version         :1.7.0
 # usage           :python NowPlaying.py
@@ -38,6 +38,12 @@ else:
     from HTMLParser import HTMLParser
 
 
+albumArtPath = "Images/albumArt.jpg"
+nowPlayingPath = "Text/NowPlaying.txt"
+nowPlayingHistoryPath = "Text/NowPlaying_History.txt"
+vlcStatusPassword = "ben"
+sleepTime = 5
+
 # Global variable to keep track of song info being printed and check for changes
 currentSongInfo = ''
 currentArtworkUrl = ''
@@ -51,12 +57,12 @@ def copyAlbumArtToFile(artworkUrl):
             print(artworkUrl)
             final_path = file_uri_to_path(artworkUrl)
             print(final_path)
-            target = r'Images/albumArt.jpg'
+            target = albumArtPath
             shutil.copyfile(final_path, target)
             print("Copied [" + str(final_path) + "] to albumArt.jpg")
         else:
             try:
-                os.remove("Images/albumArt.jpg")
+                os.remove(albumArtPath)
                 print("Removed albumArt.jpg")
             except WinError:
                 #this space blank
@@ -102,7 +108,7 @@ def getInfo():
     s = requests.Session()
 
     # CUSTOM: Username is blank, just provide the password
-    s.auth = ('', 'ben')
+    s.auth = ('', vlcStatusPassword)
 
     # Attempt to retrieve song info from the web interface
     try:
@@ -187,14 +193,14 @@ def writeSongInfoToFile( songInfo, separator , artworkUrl):
         safeprint(html.unescape(currentSongInfo))
 
         # CUSTOM: The output file name can be changed
-        textFile = codecs.open('Text/NowPlaying.txt', 'w', encoding='utf-8', errors='ignore')
+        textFile = codecs.open(nowPlayingPath, 'w', encoding='utf-8', errors='ignore')
         textFile.write(html.unescape(currentSongInfo + separator))
         textFile.close()
 
         timeStamp = '{:%H:%M:%S}'.format(datetime.datetime.now())
 
         # CUSTOM: The output file name can be changed
-        textFile = codecs.open('Text/NowPlaying_History.txt', 'a', encoding='utf-8', errors='ignore')
+        textFile = codecs.open(nowPlayingHistoryPath, 'a', encoding='utf-8', errors='ignore')
         textFile.write(html.unescape(('%s: %s%s') % (timeStamp, currentSongInfo, os.linesep)))
         textFile.close()
 # END: writeSongInfoToFile( songInfo, separator )
@@ -228,5 +234,5 @@ if __name__ == '__main__':
         getInfo()
 
         # CUSTOM: Sleep for a number of seconds before checking again
-        time.sleep(5)
+        time.sleep(sleepTime)
 # END: if __name__ == '__main__'
