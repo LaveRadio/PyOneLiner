@@ -37,12 +37,13 @@ else:
     pythonVersion = 2
     from HTMLParser import HTMLParser
 
-
+# Variables to configure
 albumArtPath = "Images/albumArt.jpg"
 nowPlayingPath = "Text/NowPlaying.txt"
 nowPlayingHistoryPath = "Text/NowPlaying_History.txt"
 vlcStatusPassword = "ben"
-sleepTime = 5
+sleepTime = 5 #seconds
+
 
 # Global variable to keep track of song info being printed and check for changes
 currentSongInfo = ''
